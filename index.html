@@ -10,7 +10,29 @@
   <script src="https://unpkg.com/@babel/standalone@7.19.1/babel.min.js"></script>
 </head>
 <body>
-  
-  
+    <div id="root"></div>
+
+    <script src="t-shirts.js"></script>
+    <script type="text/babel">
+      function Tshirt (props) {
+        const shirt = props.shirt
+        
+        const [quantity, setQuantity] = React.useState(1)
+
+        function clickHandler () {
+          props.onUpdateStock(shirt, quantity)
+          setQuantity(1)
+        }
+
+        function quantityHandler (e) {
+          setQuantity(Number(e.target.value))
+        }
+
+        const options = []
+        for (let i = 1; i <= shirt.stock; i++) {
+          options.push(<option key={i} value={i}>{i}</option>)
+        }
+      }
+    </script>
 </body>
 </html>
