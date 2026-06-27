@@ -11,9 +11,9 @@
 </head>
 <body>
     <div id="root"></div>
-
+    
     <script src="t-shirts.js"></script>
-    <script type="text/babel">
+    <script type="text/babel" data-type="module">
       function Tshirt (props) {
         const shirt = props.shirt
         
@@ -32,7 +32,52 @@
         for (let i = 1; i <= shirt.stock; i++) {
           options.push(<option key={i} value={i}>{i}</option>)
         }
+
+        return (
+          <div className="tshirt-card">
+            <img src={"images/" + shirt.image} alt={shirt.title} />
+            <h3>{shirt.title}</h3>
+            <p className="price">$ {shirt.price.toFixed(2)}</p>
+
+            {shirt.stock === 0 ? (
+              <p className="out-of-stock">Out of Stock</p>
+            ) : (
+              <div>
+                <p>{shirt.stock} left!</p>
+                <div className="quantity">
+                  <select value={quantity} onChange={quantityHandler}>
+                    {options}
+                  </select>
+                  <button onClick={clickHandler}>Buy</button>
+                </div>
+              </div>
+            )}
+          </div>
+        )
       }
+
+      function App () {
+        const [items, setItems] = React.useState(tshirts)
+
+        function onUpdateStockHandler (shirt, selectedQty) {
+          setItems((prevState) => 
+            prevState.map(s => s.title === shirt.title ? { ...s, stock: s.stock - selectedQty } : s))
+        }
+
+        return (
+          <>
+            <h1 className="mt-4 px-4">T-Shirts</h1>
+            <div className="tshirt-grid">
+              {items.map(shirt => (
+                <Tshirt key={shirt.title} shirt={shirt} onUpdateStock={onUpdateStockHandler} />
+              ))}
+            </div>
+          </>
+        )
+      }
+
+      const root = ReactDOM.createRoot(document.getElementById('root'))
+      root.render(<App />)
     </script>
 </body>
 </html>
