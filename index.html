@@ -8,6 +8,55 @@
   <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
   <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
   <script src="https://unpkg.com/@babel/standalone@7.19.1/babel.min.js"></script>
+
+  <style>
+    .tshirt-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      column-gap: 30px;
+      row-gap: 40px;
+      padding: 20px;
+    }
+
+    .tshirt-card {
+      display: flex;
+      flex-direction: column;
+      text-align: left;
+    }
+
+    .tshirt-card img {
+      width: 100%;
+      object-fit: cover;
+    }
+
+    .out-of-stock {
+      color: red;
+    }
+
+    .price{
+      font-weight: bold;
+      font-style: italic;
+    }
+
+    .quantity {
+      display: flex;
+      gap: 15px;
+    }
+
+    .quantity select {
+      padding: 0 12px;
+      border-radius: 4px;
+      width: 120px;
+    }
+
+    .quantity button {
+      padding: 8px 16px;
+      color: white;
+      background-color: #6c757d;
+      border: none;
+      border-radius: 4px;
+    }
+  </style>
 </head>
 <body>
     <div id="root"></div>
@@ -30,7 +79,7 @@
 
         const options = []
         for (let i = 1; i <= shirt.stock; i++) {
-          options.push(<option key={i} value={i}>{i}</option>)
+          options.push(i)
         }
 
         return (
@@ -46,7 +95,9 @@
                 <p>{shirt.stock} left!</p>
                 <div className="quantity">
                   <select value={quantity} onChange={quantityHandler}>
-                    {options}
+                    {stockNumbers.map(num => (
+                      <option key={num} value={num}>{num}</option>
+                    ))}
                   </select>
                   <button onClick={clickHandler}>Buy</button>
                 </div>
